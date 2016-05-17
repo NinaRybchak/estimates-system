@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html ng-app="sampleApp">
+    <head>
+        <title>Hello, Nina</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/sample-angular-app.js"></script>
+        <script type="text/javascript" src="js/sample-angular-controller.js"></script>
+    </head>
+
+    <body>
+        <h5>Simple spring boot app with Hibernate and Angular</h5>
+        <div ng-controller="sampleUsersController as suControl">
+            <ul ng-repeat="user in users">
+                <li>{{user.name}} {{user.lastName}}, {{user.role}}</li>
+            </ul>
+            <button ng-click="suControl.loadUsers()">Load users</button>
+        </div>
+    </body>
+</html>
