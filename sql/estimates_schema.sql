@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `jobs`;
 CREATE TABLE `jobs` (
   `id_job` int(11) NOT NULL AUTO_INCREMENT,
   `id_project` int(11) NOT NULL,
-  `name` mediumtext,
+  `first_name` mediumtext,
   `description` text,
   `time_estimated` int(10) DEFAULT NULL,
   `cost_estimated` decimal(12,2) DEFAULT NULL,
@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS `projects`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projects` (
   `id_project` int(11) NOT NULL AUTO_INCREMENT,
-  `name` mediumtext,
+  `first_name` mediumtext,
   `description` text,
   `time_estimated` int(10) DEFAULT NULL,
   `cost_estimated` decimal(10,2) DEFAULT NULL,
@@ -90,7 +90,7 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
   `id_role` int(11) NOT NULL AUTO_INCREMENT,
-  `name` mediumtext,
+  `first_name` mediumtext,
   PRIMARY KEY (`id_role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -114,7 +114,7 @@ DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE `tasks` (
   `id_task` int(11) NOT NULL AUTO_INCREMENT,
   `id_job` int(11) NOT NULL,
-  `name` mediumtext,
+  `first_name` mediumtext,
   `description` text,
   `time_estimated` int(10) DEFAULT NULL,
   `cost_estimated` decimal(12,2) DEFAULT NULL,

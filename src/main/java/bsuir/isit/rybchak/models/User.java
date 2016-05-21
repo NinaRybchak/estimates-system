@@ -1,7 +1,5 @@
 package bsuir.isit.rybchak.models;
 
-import bsuir.isit.rybchak.models.enums.Role;
-
 import javax.persistence.*;
 
 @Entity
@@ -10,39 +8,79 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id_user;
 
-    @Column(name = "first_name")
-    private String name;
+    @Column()
+    private Integer id_role;
 
-    @Column
-    private String lastName;
+    @Column()
+    private String first_name;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column()
+    private String surname;
 
-    public Integer getId() {
-        return id;
+    @Column()
+    private String position;
+
+    @Column()
+    private String login;
+
+    @Column()
+    private String password;
+
+    public Integer getId_user() {
+        return id_user;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId_user(Integer id_user) {
+        this.id_user = id_user;
     }
 
-    public String getName() {
-        return name;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Integer getId_role() {
+        return id_role;
+    }
+
+    public void setId_role(Integer id_role) {
+        this.id_role = id_role;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

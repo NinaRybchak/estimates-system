@@ -20,4 +20,14 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userDao.getAll();
     }
+
+    @Transactional
+    public User checkLogUser(User logUser) {
+        List<User> allUsers = userDao.getAll();
+        for(User user : allUsers) {
+            if(user.getLogin().equals(logUser.getLogin()) && user.getPassword().equals(logUser.getPassword()))
+                return user;
+        }
+        return null;
+    }
 }

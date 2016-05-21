@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import({
         DatabaseConfiguration.class
 })
-@ComponentScan("by.nalivajr.fornina")
+@ComponentScan("bsuir.isit.rybchak")
 public class Application {
 
     public static void main(String[] args) {

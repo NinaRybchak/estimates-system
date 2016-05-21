@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html ng-app="sampleApp">
     <head>
-        <title>Hello, Nina</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <title>Оценка ИТ-проектов</title>
+        <link rel="stylesheet" href="css/indexStyles.css" />
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/angular.min.js"></script>
@@ -11,12 +12,33 @@
     </head>
 
     <body>
-        <h5>Simple spring boot app with Hibernate and Angular</h5>
-        <div ng-controller="sampleUsersController as suControl">
-            <ul ng-repeat="user in users">
-                <li>{{user.name}} {{user.lastName}}, {{user.role}}</li>
-            </ul>
+        <div ng-controller="loginController as logControl" class = "container" ng-hide="loggedUser.id_user>0">
+            <p>{{loggedUser}}</p>
+            <div class="wrapper">
+                <form name="Login_Form" class="form-signin" ng-submit="logControl.performLogin(login, password)">
+                    <h3 class="form-signin-heading">Добро пожаловать! Войдите в систему</h3>
+                    <hr class="colorgraph"><br>
+
+                    <input ng-model="login" type="text" class="form-control" placeholder="Логин" required="" autofocus="" />
+                    <input ng-model="password" type="password" class="form-control" placeholder="Пароль" required=""/>
+
+                    <button class="btn btn-lg btn-primary btn-block" value="Login" type="Submit">Вход</button>
+                </form>
+            </div>
+        </div>
+        <div ng-controller="sampleUsersController as suControl" ng-show="loggedUser.id_role == 1">
+            <h2>Manager Page</h2>
             <button ng-click="suControl.loadUsers()">Load users</button>
+            <ul ng-repeat="user in users">
+                <li>{{user.first_name}}</li>
+            </ul>
+        </div>
+        <div ng-controller="sampleUsersController as suControl" ng-show="loggedUser.id_role == 2">
+            <h2>Expert Page</h2>
+            <button ng-click="suControl.loadUsers()">Load users</button>
+            <ul ng-repeat="user in users">
+                <li>{{user.first_name}}</li>
+            </ul>
         </div>
     </body>
 </html>
