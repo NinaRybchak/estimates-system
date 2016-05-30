@@ -21,9 +21,4 @@ public class LoginController {
     private User checkLogin(@RequestBody User logUser) {
         return userService.checkLogUser(logUser);
     }
-
-//    @RequestMapping(value = "/login")
-//    private List<User> getUserById() {
-//
-//    }
 }
