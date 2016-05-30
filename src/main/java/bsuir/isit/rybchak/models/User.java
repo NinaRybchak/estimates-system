@@ -10,8 +10,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_user;
 
-    @Column()
-    private Integer id_role;
+    @ManyToOne
+    @JoinColumn(name = "id_role")
+    private Role role;
 
     @Column()
     private String first_name;
@@ -27,6 +28,14 @@ public class User {
 
     @Column()
     private String password;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Integer getId_user() {
         return id_user;
@@ -58,14 +67,6 @@ public class User {
 
     public void setPosition(String position) {
         this.position = position;
-    }
-
-    public Integer getId_role() {
-        return id_role;
-    }
-
-    public void setId_role(Integer id_role) {
-        this.id_role = id_role;
     }
 
     public String getLogin() {

@@ -1,0 +1,13 @@
+<div ng-controller="loginController as logControl" class = "container" ng-hide="loggedUser.id_user>0">
+    <div class="wrapper">
+        <form name="Login_Form" class="form-signin" ng-submit="logControl.performLogin(login, password)">
+            <h3 class="form-signin-heading">Добро пожаловать! Войдите в систему</h3>
+            <hr class="colorgraph"><br>
+
+            <input ng-model="login" type="text" class="form-control" placeholder="Логин" required="" autofocus="" />
+            <input ng-model="password" type="password" class="form-control" placeholder="Пароль" required=""/>
+
+            <button class="btn btn-lg btn-primary btn-block" value="Login" type="Submit">Вход</button>
+        </form>
+    </div>
+</div>

@@ -4,41 +4,21 @@
         <title>Оценка ИТ-проектов</title>
         <link rel="stylesheet" href="css/indexStyles.css" />
         <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/angular-route.js"></script>
         <script type="text/javascript" src="js/sample-angular-app.js"></script>
         <script type="text/javascript" src="js/sample-angular-controller.js"></script>
+        <script type="text/javascript" src="js/confirm-bootstrap.js"></script>
+
+        <base href="/"/>
     </head>
 
     <body>
-        <div ng-controller="loginController as logControl" class = "container" ng-hide="loggedUser.id_user>0">
-            <p>{{loggedUser}}</p>
-            <div class="wrapper">
-                <form name="Login_Form" class="form-signin" ng-submit="logControl.performLogin(login, password)">
-                    <h3 class="form-signin-heading">Добро пожаловать! Войдите в систему</h3>
-                    <hr class="colorgraph"><br>
-
-                    <input ng-model="login" type="text" class="form-control" placeholder="Логин" required="" autofocus="" />
-                    <input ng-model="password" type="password" class="form-control" placeholder="Пароль" required=""/>
-
-                    <button class="btn btn-lg btn-primary btn-block" value="Login" type="Submit">Вход</button>
-                </form>
-            </div>
-        </div>
-        <div ng-controller="sampleUsersController as suControl" ng-show="loggedUser.id_role == 1">
-            <h2>Manager Page</h2>
-            <button ng-click="suControl.loadUsers()">Load users</button>
-            <ul ng-repeat="user in users">
-                <li>{{user.first_name}}</li>
-            </ul>
-        </div>
-        <div ng-controller="sampleUsersController as suControl" ng-show="loggedUser.id_role == 2">
-            <h2>Expert Page</h2>
-            <button ng-click="suControl.loadUsers()">Load users</button>
-            <ul ng-repeat="user in users">
-                <li>{{user.first_name}}</li>
-            </ul>
+        <div id="main">
+            <div ng-view></div>
         </div>
     </body>
 </html>

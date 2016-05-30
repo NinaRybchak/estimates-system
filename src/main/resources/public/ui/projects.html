@@ -1,0 +1,136 @@
+<div ng-controller="projectsController as projControl" ng-show="loggedUser.role.id_role == 1">
+    <!-- line modal -->
+    <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="lineModalLabel">Создать Проект</h3>
+                </div>
+                <!-- content goes here -->
+                <form ng-submit="projControl.addProject(projName, projDesc, projTimeEst, projCostEst, projTimeReal, projCostReal)">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="inputProjName">Название</label>
+                            <input ng-model="projName" class="form-control" type="text" id="inputProjName" placeholder="Введите название"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProjDesc">Краткое описание</label>
+                            <input ng-model="projDesc" class="form-control" type="text" id="inputProjDesc" placeholder="Введите описание"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProjTimeEstim">Оценка времени выполнения проекта</label>
+                            <input type="number" ng-model="projTimeEst" class="form-control" id="inputProjTimeEstim" placeholder="Введите время в часах"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProjCostEstim">Оценка стоимости выполнения проекта</label>
+                            <input type="number" ng-model="projCostEst" class="form-control" id="inputProjCostEstim" placeholder="Введите стоимость">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProjTimeReal">Фактическое время выполнения проекта</label>
+                            <input type="number" ng-model="projTimeReal" class="form-control" id="inputProjTimeReal" placeholder="Введите фактическое кремя выполнения проекта"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProjCostReal">Фактическая стоимость выполнения проекта</label>
+                            <input type="number" ng-model="projCostReal" class="form-control" id="inputProjCostReal" placeholder="Введите фактическую стоимость проекта"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Закрыть</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="Submit" id="saveProject" class="btn btn-default btn-hover-green" role="button">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Добро пожаловать, {{loggedUser.first_name}} {{loggedUser.surname}}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"></a></li>
+                    <li><a href="/ui/projects" ng-click="projControl.getProjects()">Проекты</a></li>
+                    <li><a href="#">Эксперты</a></li>
+                    <li><a href="#">Профиль</a></li>
+                    <li>
+                        <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse" aria-expanded="false" aria-controls="nav-collapse1" ng-click = "projControl.logOut()">Выйти</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="col-md-10 col-md-offset-1">
+
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-6">
+                        <h3 class="panel-title">Мои Проекты</h3>
+                    </div>
+                    <div class="col col-xs-6 text-right">
+                        <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-sm btn-primary btn-create">Создать</button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-list">
+                    <thead>
+                    <tr>
+                        <th><em class="fa fa-cog"></em></th>
+                        <th class="hidden-xs">ID</th>
+                        <th>Название</th>
+                        <th>Краткое описание</th>
+                        <th>Оценки времени</th>
+                        <th>Оценки стоимости</th>
+                        <th>Реальное время</th>
+                        <th>Реальная стоимость</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="project in projects">
+                        <td align="center">
+                            <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+                            <a class="btn btn-danger" id="projectDel" data-confirm-title="Удаление проекта" data-confirm-message="Вы уверены, что хотите удалить проект?"
+                               ng-click="projControl.deleteProject(project)"><em class="fa fa-trash"></em></a>
+                        </td>
+                        <td class="hidden-xs">{{project.id_project}}</td>
+                        <td>{{project.name}}</td>
+                        <td>{{project.description}}</td>
+                        <td>{{project.time_estimated}}</td>
+                        <td>{{project.cost_estimated}}</td>
+                        <td>{{project.time_real}}</td>
+                        <td>{{project.cost_real}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col col-xs-4">Page 1 of 5</div>
+                    <div class="col col-xs-8">
+                        <ul class="pagination hidden-xs pull-right">
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                        <ul class="pagination visible-xs pull-right">
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
