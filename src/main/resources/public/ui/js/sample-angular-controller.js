@@ -2,10 +2,7 @@
 
 sampleApp.controller('projectsController', function ($scope, $rootScope, $http, $location, $route) {
     $scope.projects = [];
-    this.logOut = function () {
-        $rootScope.loggedUser = [];
-        $location.path('/ui/login');
-    };
+    $scope.jobs = [];
     this.addProject = function (projName, projDesc, projTimeEst, projCostEst, projCostReal, projTimeReal) {
         var project = {
             "id_project" : "null",
@@ -17,8 +14,9 @@ sampleApp.controller('projectsController', function ($scope, $rootScope, $http, 
             "cost_real" : projCostReal,
             "manager" : $rootScope.loggedUser
         }
-        $http.post(serverUrl + "/addProject", project).success(function () {
+        $http.post(serverUrl + "/addProject", project).success(function (response) {
             $('#squarespaceModal').modal('hide');
+            $scope.projects.push(response);
             console.log('Project added successfully');
         })
             .error(function (error) {
@@ -26,7 +24,8 @@ sampleApp.controller('projectsController', function ($scope, $rootScope, $http, 
             });
     };
     this.getProjects = function () {
-        $http.get(serverUrl + '/projects/all').then(function (response) {
+        $http.get(serverUrl + '/projects/all',
+            {params : {id_manager : $rootScope.loggedUser.id_user}}).then(function (response) {
                 $scope.projects = response.data;
                 console.log('success on get projects');
             },
@@ -35,16 +34,91 @@ sampleApp.controller('projectsController', function ($scope, $rootScope, $http, 
             });
     };
     angular.element(document).ready(this.getProjects());
-    angular.element(document).ready($('#projectDel').confirmModal());
     this.deleteProject = function (project) {
-        $('#projectDel').confirmModal();
-        $http.post(serverUrl + "/deleteProject",project.id_project).success(function () {
-            $route.reload();
-            console.log('success on delete projects');
+        if(confirm("Вы уверены, что хотите удалить проект?")) {
+            $http.post(serverUrl + "/deleteProject", project.id_project).success(function () {
+                $route.reload();
+                console.log('success on delete projects');
+            })
+                .error(function (error) {
+                    console.log('error on delete projects');
+                });
+        }
+    };
+    this.openProjectForEdit = function(project) {
+        $rootScope.editableProject = project;
+        $location.path('/ui/editProject');
+    };
+});
+
+sampleApp.controller('editProjectController', function ($scope, $rootScope, $http, $location, $route) {
+    this.updateProject = function (pName, pDesc, pTimeEst, pCostEst, pCostReal, pTimeReal) {
+        var project = {
+            "id_project" : $rootScope.editableProject.id_project,
+            "name" : pName,
+            "description" : pDesc,
+            "time_estimated" : pTimeEst,
+            "cost_estimated" : pCostEst,
+            "time_real" : pTimeReal,
+            "cost_real" : pCostReal,
+            "manager" : $rootScope.editableProject.manager
+        }
+        $http.post(serverUrl + "/updateProject", project).success(function (response) {
+            $rootScope.editableProject = response;
+            alert("Изменения сохранены успешно!");
+            console.log('Project updated successfully');
         })
             .error(function (error) {
-                console.log('error on delete projects');
+                console.log('Error on updating project');
             });
+    };
+    this.addJob = function (jName, jDesc, jTimeEst, jCostEst, jCostReal, jTimeReal, jExpert) {
+        var job = {
+            "id_job" : "null",
+            "name" : jName,
+            "description" : jDesc,
+            "time_estimated" : jTimeEst,
+            "cost_estimated" : jCostEst,
+            "time_real" : jTimeReal,
+            "cost_real" : jCostReal,
+            "project" : $rootScope.editableProject,
+            "id_expert" : jExpert,
+            "is_new" : 0
+        }
+        $http.post(serverUrl + "/addJob", job).success(function (response) {
+            $('#squarespaceModal').modal('hide');
+            $scope.jobs.push(response);
+            console.log('Job added successfully');
+        })
+            .error(function (error) {
+                console.log('Error on adding job');
+            });
+    };
+    this.getJobs = function () {
+        $http.get(serverUrl + '/jobs/all',
+            {params : {id_project : $rootScope.editableProject.id_project}}).then(function (response) {
+                $scope.jobs = response.data;
+                console.log('success on get jobs');
+            },
+            function () {
+                console.log('error on get jobs');
+            });
+    };
+    angular.element(document).ready(this.getJobs());
+    this.deleteJob = function (job) {
+        if(confirm("Вы уверены, что хотите удалить работу?")) {
+            $http.post(serverUrl + "/deleteJob", job.id_job).success(function () {
+                $route.reload();
+                console.log('success on delete job');
+            })
+                .error(function (error) {
+                    console.log('error on delete job');
+                });
+        }
+    };
+    this.openJobForEdit = function(job) {
+        $rootScope.editableJob = job;
+        $location.path('/ui/editJob');
     };
 });
 
@@ -62,7 +136,12 @@ sampleApp.controller('loginController', function ($scope, $rootScope, $http, $lo
         $http.post(serverUrl + '/checkLogin', data).success(function(data) {
             if(!(data == [])) {
                 $rootScope.loggedUser = data;
-                $location.path('/ui/projects');
+                if(data.role.id_role == 1)
+                    $location.path('/ui/projects');
+                if(data.role.id_role == 2)
+                    $location.path('/ui/expert/home');
+                if(data.role.id_role == 3)
+                    $location.path('/ui/admin');
                 console.log('Login successful');
             }
         })
@@ -71,4 +150,12 @@ sampleApp.controller('loginController', function ($scope, $rootScope, $http, $lo
                 console.log('Error on Login');
             });
     };
+    this.logOut = function () {
+        $rootScope.loggedUser = [];
+        $location.path('/ui/login');
+    };
+});
+
+sampleApp.controller('adminController', function ($scope, $rootScope, $http, $location, $route) {
+    
 });

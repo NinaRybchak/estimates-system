@@ -1,0 +1,189 @@
+<div ng-controller="projectsController as projControl">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Добро пожаловать, {{loggedUser.first_name}} {{loggedUser.surname}}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"></a></li>
+                    <li><a href="/ui/projects" ng-click="projControl.getProjects()">Проекты</a></li>
+                    <li><a href="#">Эксперты</a></li>
+                    <li><a href="#">Профиль</a></li>
+                    <li>
+                        <div ng-controller="loginController as logControl">
+                            <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse"
+                               aria-expanded="false" aria-controls="nav-collapse1" ng-click = "logControl.logOut()">Выйти</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div ng-controller="editProjectController as edProjControl">
+    <div class="container">
+    <form class="form-horizontal" ng-submit="edProjControl.updateProject(pName,pDesc,pTimeEst,pCostEst,pTimeReal,pCostReal)">
+        <fieldset>
+            <div id="legend1">
+                <legend class="">Общие данные о проекте</legend>
+            </div>
+            <div class="form-group">
+                <!-- Название проекта -->
+                <label class="col-lg-3 control-label"  for="projName">Название проекта</label>
+                <div class="col-lg-6">
+                    <input type="text" id="projName" ng-model="pName" placeholder="" class="form-control" ng-init="pName = editableProject.name">
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- Краткое описание -->
+                <label class="col-lg-3 control-label" for="projDesc">Краткое описание</label>
+                <div class="col-lg-6">
+                    <input type="text" id="projDesc" ng-model="pDesc" placeholder="" class="form-control" ng-init="pDesc = editableProject.description">
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- Оценка времени -->
+                <label class="col-lg-3 control-label" for="projTimeEst">Оценка времени</label>
+                <div class="col-lg-6">
+                    <input type="number" id="projTimeEst" ng-model="pTimeEst" placeholder="" class="form-control" ng-init="pTimeEst = editableProject.time_estimated">
+                </div>
+            </div>
+
+                <div class="form-group">
+                <!-- Оценка стоимости -->
+                <label class="col-lg-3 control-label" for="projCostEst">Оценка стоимости</label>
+                <div class="col-lg-6">
+                    <input type="number" id="projCostEst" ng-model="pCostEst" placeholder="" class="form-control" ng-init="pCostEst = editableProject.cost_estimated">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Фактическое время -->
+                <label class="col-lg-3 control-label" for="projTimeReal">Фактическое время</label>
+                <div class="col-lg-6">
+                    <input type="number" id="projTimeReal" ng-model="pTimeReal" placeholder="" class="form-control" ng-init="pTimeReal = editableProject.time_real">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Фактическая стоимость -->
+                <label class="col-lg-3 control-label" for="projCostReal">Фактическая стоимость</label>
+                <div class="col-lg-6">
+                    <input type="number" id="projCostReal" ng-model="pCostReal" placeholder="" class="form-control" ng-init="pCostReal = editableProject.cost_real">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Button -->
+                <div class="col-lg-9 col text-right">
+                    <button type="submit" class="btn btn-sm btn-primary btn-create">Сохранить изменения</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+        <div id="legend2">
+            <legend class="">Декомпозиция работ проекта</legend>
+        </div>
+        <!-- line modal -->
+        <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title" id="lineModalLabel">Создать Работу</h3>
+                    </div>
+                    <!-- content goes here -->
+                    <form ng-submit="edProjControl.addJob(jName, jDesc, jTimeEst, jCostEst, jTimeReal, jCostReal, jExpert)">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputJName">Название</label>
+                                <input ng-model="jName" class="form-control" type="text" id="inputJName" placeholder="Введите название"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJDesc">Краткое описание</label>
+                                <input ng-model="jDesc" class="form-control" type="text" id="inputJDesc" placeholder="Введите описание"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJTimeEstim">Оценка времени выполнения работы, ч</label>
+                                <input type="number" ng-model="jTimeEst" class="form-control" id="inputJTimeEstim" placeholder="Введите время в часах"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJCostEstim">Оценка стоимости выполнения работы, $</label>
+                                <input type="number" ng-model="jCostEst" class="form-control" id="inputJCostEstim" placeholder="Введите стоимость">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJTimeReal">Фактическое время выполнения работы, ч</label>
+                                <input type="number" ng-model="jTimeReal" class="form-control" id="inputJTimeReal" placeholder="Введите фактическое кремя выполнения проекта"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJCostReal">Фактическая стоимость выполнения работы, $</label>
+                                <input type="number" ng-model="jCostReal" class="form-control" id="inputJCostReal" placeholder="Введите фактическую стоимость проекта"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputJExpert">Назначить эксперта для оценки</label>
+                                <input type="number" ng-model="jExpert" class="form-control" id="inputJExpert" placeholder="Введите эксперта"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Закрыть</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="Submit" id="saveJob" class="btn btn-default btn-hover-green" role="button">Сохранить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-6">
+                        <h3 class="panel-title">Мои Работы</h3>
+                    </div>
+                    <div class="col col-xs-6 text-right">
+                        <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-sm btn-primary btn-create">Создать</button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-list">
+                    <thead>
+                    <tr>
+                        <th><em class="fa fa-cog"></em></th>
+                        <th class="hidden-xs">ID</th>
+                        <th>Название</th>
+                        <th>Краткое описание</th>
+                        <th>Оценки времени</th>
+                        <th>Оценки стоимости</th>
+                        <th>Реальное время</th>
+                        <th>Реальная стоимость</th>
+                        <th>Эксперт-оценщик</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in jobs">
+                    <td align="center">
+                    <a class="btn btn-default" ng-click="edProjControl.openJobForEdit(job)"><em class="fa fa-pencil"></em></a>
+                    <a class="btn btn-danger"
+                    ng-click="edProjControl.deleteJob(job)"><em class="fa fa-trash"></em></a>
+                    </td>
+                    <td class="hidden-xs">{{job.id_job}}</td>
+                    <td>{{job.name}}</td>
+                    <td>{{job.description}}</td>
+                    <td>{{job.time_estimated}}</td>
+                    <td>{{job.cost_estimated}}</td>
+                    <td>{{job.time_real}}</td>
+                    <td>{{job.cost_real}}</td>
+                    <td>{{job.expert.login}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+</div>

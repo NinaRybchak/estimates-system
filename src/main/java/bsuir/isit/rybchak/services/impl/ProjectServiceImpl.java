@@ -34,4 +34,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(Integer id_project) { projectDao.delete(id_project);}
+
+    @Transactional
+    public void updateProject(Project project) {
+        projectDao.saveOrUpdate(project);
+    }
 }

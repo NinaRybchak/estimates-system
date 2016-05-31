@@ -23,6 +23,12 @@ public interface DAO<T> {
     void save(T entity);
 
     /**
+     * Saves item in database
+     * @param entity the item to be saved
+     */
+    void saveOrUpdate(T entity);
+
+    /**
      * Removes item from database by its ID
      */
     void delete(Integer id);

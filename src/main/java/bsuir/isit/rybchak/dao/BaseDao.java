@@ -32,6 +32,11 @@ public abstract class BaseDao<T> implements DAO<T> {
     }
 
     @Override
+    public void saveOrUpdate(T entity) {
+        sessionFactory.getCurrentSession().saveOrUpdate(entity);
+    }
+
+    @Override
     public void delete(Integer id) {
         T reference = sessionFactory.getCurrentSession().get(entityType, id);
         sessionFactory.getCurrentSession().delete(reference);

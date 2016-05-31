@@ -5,11 +5,9 @@ import bsuir.isit.rybchak.models.User;
 import bsuir.isit.rybchak.services.ProjectService;
 import bsuir.isit.rybchak.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,15 +17,28 @@ public class ProjectsController {
     private ProjectService projectService;
 
     @RequestMapping(value = "/addProject", method = RequestMethod.POST)
-    private void createProject(@RequestBody Project project) {
+    private Project createProject(@RequestBody Project project) {
         projectService.createProject(project);
+        return project;
     }
 
-    @RequestMapping(value = "/projects/all")
-    private List<Project> getAllProjects() {
-        return projectService.getAllProjects();
+    @RequestMapping(value = "/projects/all", method = RequestMethod.GET)
+    private List<Project> getAllProjects(@RequestParam Integer id_manager) {
+        List<Project> allProjects = projectService.getAllProjects();
+        List<Project> managerProjects = new ArrayList<Project>();
+        for(Project project : allProjects) {
+            if(project.getManager().getId_user() == id_manager)
+                managerProjects.add(project);
+        }
+        return managerProjects;
     }
 
     @RequestMapping(value = "/deleteProject", method = RequestMethod.POST)
     private void deleteProject(@RequestBody Integer id_project) { projectService.deleteProject(id_project);}
+
+    @RequestMapping(value = "/updateProject", method = RequestMethod.POST)
+    private Project updateProject(@RequestBody Project project) {
+        projectService.updateProject(project);
+        return project;
+    }
 }
