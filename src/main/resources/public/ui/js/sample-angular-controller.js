@@ -52,6 +52,16 @@ sampleApp.controller('projectsController', function ($scope, $rootScope, $http, 
 });
 
 sampleApp.controller('editProjectController', function ($scope, $rootScope, $http, $location, $route) {
+    $scope.experts = [];
+    this.getExperts = function () {
+        $http.get(serverUrl + '/experts/all').then(function (response) {
+                $scope.experts = response.data;
+                console.log('success on get experts');
+            },
+            function () {
+                console.log('error on get experts');
+            });
+    };
     this.updateProject = function (pName, pDesc, pTimeEst, pCostEst, pCostReal, pTimeReal) {
         var project = {
             "id_project" : $rootScope.editableProject.id_project,
@@ -73,6 +83,7 @@ sampleApp.controller('editProjectController', function ($scope, $rootScope, $htt
             });
     };
     this.addJob = function (jName, jDesc, jTimeEst, jCostEst, jCostReal, jTimeReal, jExpert) {
+        var jsonExpert = JSON.parse(jExpert);
         var job = {
             "id_job" : "null",
             "name" : jName,
@@ -82,7 +93,7 @@ sampleApp.controller('editProjectController', function ($scope, $rootScope, $htt
             "time_real" : jTimeReal,
             "cost_real" : jCostReal,
             "project" : $rootScope.editableProject,
-            "id_expert" : jExpert,
+            "expert" : jsonExpert,
             "is_new" : 0
         }
         $http.post(serverUrl + "/addJob", job).success(function (response) {
@@ -104,7 +115,7 @@ sampleApp.controller('editProjectController', function ($scope, $rootScope, $htt
                 console.log('error on get jobs');
             });
     };
-    angular.element(document).ready(this.getJobs());
+    angular.element(document).ready(this.getJobs(), this.getExperts());
     this.deleteJob = function (job) {
         if(confirm("Вы уверены, что хотите удалить работу?")) {
             $http.post(serverUrl + "/deleteJob", job.id_job).success(function () {
@@ -249,4 +260,133 @@ sampleApp.controller('editUserController', function ($scope, $rootScope, $http, 
             });
     };
     angular.element(document).ready(this.getRoles());
+});
+
+sampleApp.controller('editJobController', function ($scope, $rootScope, $http, $location, $route) {
+    $scope.tasks = [];
+    $scope.experts = [];
+    this.getExperts = function () {
+        $http.get(serverUrl + '/experts/all').then(function (response) {
+                $scope.experts = response.data;
+                console.log('success on get experts');
+            },
+            function () {
+                console.log('error on get experts');
+            });
+    };
+    this.updateJob = function (jName,jDesc,jTimeEst,jCostEst,jTimeReal,jCostReal, jExpert) {
+        var jsonExpert = JSON.parse(jExpert);
+        var job = {
+            "id_job" : $rootScope.editableJob.id_job,
+            "name" : jName,
+            "description" : jDesc,
+            "time_estimated" : jTimeEst,
+            "cost_estimated" : jCostEst,
+            "time_real" : jTimeReal,
+            "cost_real" : jCostReal,
+            "project" : $rootScope.editableJob.project,
+            "expert" : jsonExpert,
+            "is_new" : 0
+        }
+        $http.post(serverUrl + "/updateJob", job).success(function (response) {
+            $rootScope.editableJob = response;
+            alert("Изменения сохранены успешно!");
+            console.log('Job updated successfully');
+        })
+            .error(function (error) {
+                console.log('Error on updating job');
+            });
+    };
+    this.addTask = function (tName, tDesc, tTimeEst, tCostEst, tCostReal, tTimeReal, tExpert) {
+        var jsonExpert;
+        if(tExpert != null)
+            jsonExpert = JSON.parse(tExpert);
+        else
+            jsonExpert = null;
+        var task = {
+            "id_task" : "null",
+            "name" : tName,
+            "description" : tDesc,
+            "time_estimated" : tTimeEst,
+            "cost_estimated" : tCostEst,
+            "time_real" : tTimeReal,
+            "cost_real" : tCostReal,
+            "job" : $rootScope.editableJob,
+            "expert" : jsonExpert,
+            "is_new" : 0
+        }
+        $http.post(serverUrl + "/addTask", task).success(function (response) {
+            $('#squarespaceModal').modal('hide');
+            $scope.tasks.push(response);
+            console.log('Task added successfully');
+        })
+            .error(function (error) {
+                console.log('Error on adding task');
+            });
+    };
+    this.getTasks = function () {
+        $http.get(serverUrl + '/tasks/all',
+            {params : {id_job : $rootScope.editableJob.id_job}}).then(function (response) {
+                $scope.tasks = response.data;
+                console.log('success on get tasks');
+            },
+            function () {
+                console.log('error on get tasks');
+            });
+    };
+    angular.element(document).ready(this.getTasks(), this.getExperts());
+    this.deleteTask = function (task) {
+        if(confirm("Вы уверены, что хотите удалить задачу?")) {
+            $http.post(serverUrl + "/deleteTask", task.id_task).success(function () {
+                $route.reload();
+                console.log('success on delete task');
+            })
+                .error(function (error) {
+                    console.log('error on delete task');
+                });
+        }
+    };
+    this.openTaskForEdit = function(task) {
+        $rootScope.editableTask = task;
+        $location.path('/ui/editTask');
+    };
+});
+
+sampleApp.controller('editTaskController', function ($scope, $rootScope, $http, $location, $route) {
+    $scope.experts = [];
+    this.getExperts = function () {
+        $http.get(serverUrl + '/experts/all').then(function (response) {
+                $scope.experts = response.data;
+                console.log('success on get experts');
+            },
+            function () {
+                console.log('error on get experts');
+            });
+    };
+    this.updateTask = function (tName,tDesc,tTimeEst,tCostEst,tTimeReal,tCostReal,tEdExpert) {
+        var jsonExpert = JSON.parse(tEdExpert);
+        var task = {
+            "id_task" : $rootScope.editableTask.id_task,
+            "name" : tName,
+            "description" : tDesc,
+            "time_estimated" : tTimeEst,
+            "cost_estimated" : tCostEst,
+            "time_real" : tTimeReal,
+            "cost_real" : tCostReal,
+            "job" : $rootScope.editableTask.job,
+            "expert" : jsonExpert,
+            "is_new" : 0
+        }
+        $http.post(serverUrl + "/updateTask", task).success(function (response) {
+            $rootScope.editableTask = response;
+            alert("Изменения сохранены успешно!");
+            $rootScope.editableTask = [];
+            $location.path('/ui/editJob');
+            console.log('Task updated successfully');
+        })
+            .error(function (error) {
+                console.log('Error on updating task');
+            });
+    };
+    angular.element(document).ready(this.getExperts())
 });

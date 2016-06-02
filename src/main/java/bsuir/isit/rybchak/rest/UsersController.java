@@ -40,4 +40,15 @@ public class UsersController {
         userService.createUser(user);
         return user;
     }
+
+    @RequestMapping(value = "/experts/all", method = RequestMethod.GET)
+    private List<User> getAllExperts() {
+        List<User> allUsers = userService.getAllUsers();
+        List<User> experts = new ArrayList<User>();
+        for(User user : allUsers) {
+            if((user.getRole()!=null) && (user.getRole().getId_role() == 2))
+                experts.add(user);
+        }
+        return experts;
+    }
 }

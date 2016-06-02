@@ -20,7 +20,7 @@
 </div>
 <div ng-controller="editUserController as edUsControl">
     <div class="container">
-    <form class="form-horizontal" ng-submit="edUsControl.updateUser(fName, lName, pos, login, password, role)">
+    <form class="form-horizontal" ng-submit="edUsControl.updateUser(fName, lName, pos, login, password, edURole)">
         <fieldset>
             <div id="legend1">
                 <legend class="">Редактировать пользователя</legend>
@@ -65,7 +65,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="selectRole">Роль в системе</label>
                 <div class="col-lg-6">
-                    <select ng-model="role" class="form-control" id="selectRole">
+                    <select ng-model="edURole" class="form-control" id="selectRole">
                         <option ng-repeat="role in roles" value="{{role}}"
                                 ng-selected="{{role.id_role == editableUser.role.id_role}}">{{role.name}}</option>
                     </select>

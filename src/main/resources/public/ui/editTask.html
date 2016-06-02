@@ -1,0 +1,91 @@
+<div ng-controller="projectsController as projControl">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Добро пожаловать, {{loggedUser.first_name}} {{loggedUser.surname}}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"></a></li>
+                    <li><a href="/ui/projects" ng-click="projControl.getProjects()">Проекты</a></li>
+                    <li><a href="#">Эксперты</a></li>
+                    <li>
+                        <div ng-controller="loginController as logControl">
+                            <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse"
+                               aria-expanded="false" aria-controls="nav-collapse1" ng-click = "logControl.logOut()">Выйти</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div ng-controller="editTaskController as edTaskControl">
+    <div class="container">
+    <form class="form-horizontal"
+          ng-submit="edTaskControl.updateTask(tName,tDesc,tTimeEst,tCostEst,tTimeReal,tCostReal,tEdExpert)">
+        <fieldset>
+            <div id="legend1">
+                <legend class="">Данные задачи</legend>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label"  for="taskName">Название задачи</label>
+                <div class="col-lg-6">
+                    <input type="text" id="taskName" ng-model="tName" placeholder="" class="form-control" ng-init="tName = editableTask.name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="taskDesc">Краткое описание</label>
+                <div class="col-lg-6">
+                    <input type="text" id="taskDesc" ng-model="tDesc" placeholder="" class="form-control" ng-init="tDesc = editableTask.description">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="taskTimeEst">Оценка времени</label>
+                <div class="col-lg-6">
+                    <input type="number" id="taskTimeEst" ng-model="tTimeEst" placeholder="" class="form-control" ng-init="tTimeEst = editableTask.time_estimated">
+                </div>
+            </div>
+
+                <div class="form-group">
+                <label class="col-lg-3 control-label" for="taskCostEst">Оценка стоимости</label>
+                <div class="col-lg-6">
+                    <input type="number" id="taskCostEst" ng-model="tCostEst" placeholder="" class="form-control" ng-init="tCostEst = editableTask.cost_estimated">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Фактическое время -->
+                <label class="col-lg-3 control-label" for="taskTimeReal">Фактическое время</label>
+                <div class="col-lg-6">
+                    <input type="number" id="taskTimeReal" ng-model="tTimeReal" placeholder="" class="form-control" ng-init="tTimeReal = editableTask.time_real">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="taskCostReal">Фактическая стоимость</label>
+                <div class="col-lg-6">
+                    <input type="number" id="taskCostReal" ng-model="tCostReal" placeholder="" class="form-control" ng-init="tCostReal = editableTask.cost_real">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="selectEdExpert">Назначить эксперта для оценки</label>
+                <div class="col-lg-6">
+                    <select ng-model="tEdExpert" class="form-control" id="selectEdExpert" ng-init="tEdExpert">
+                        <option ng-repeat="expert in experts" value="{{expert}}"
+                                ng-selected="{{editableTask.expert.id_expert == expert.id_expert}}">{{expert.login}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Button -->
+                <div class="col-lg-9 col text-right">
+                    <button type="submit" class="btn btn-sm btn-primary btn-create">Сохранить изменения</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</div>

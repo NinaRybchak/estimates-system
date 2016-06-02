@@ -20,56 +20,61 @@
         </div>
     </nav>
 </div>
-<div ng-controller="editProjectController as edProjControl">
+<div ng-controller="editJobController as edJobControl">
     <div class="container">
-    <form class="form-horizontal" ng-submit="edProjControl.updateProject(pName,pDesc,pTimeEst,pCostEst,pTimeReal,pCostReal)">
+    <form class="form-horizontal" ng-submit="edJobControl.updateJob(jName,jDesc,jTimeEst,jCostEst,jTimeReal,jCostReal, jExpert)">
         <fieldset>
             <div id="legend1">
-                <legend class="">Общие данные о проекте</legend>
+                <legend class="">Общие данные о работе</legend>
             </div>
             <div class="form-group">
-                <!-- Название проекта -->
-                <label class="col-lg-3 control-label"  for="projName">Название проекта</label>
+                <label class="col-lg-3 control-label"  for="jobName">Название работы</label>
                 <div class="col-lg-6">
-                    <input type="text" id="projName" ng-model="pName" placeholder="" class="form-control" ng-init="pName = editableProject.name">
+                    <input type="text" id="jobName" ng-model="jName" placeholder="" class="form-control" ng-init="jName = editableJob.name">
                 </div>
             </div>
             <div class="form-group">
-                <!-- Краткое описание -->
-                <label class="col-lg-3 control-label" for="projDesc">Краткое описание</label>
+                <label class="col-lg-3 control-label" for="jobDesc">Краткое описание</label>
                 <div class="col-lg-6">
-                    <input type="text" id="projDesc" ng-model="pDesc" placeholder="" class="form-control" ng-init="pDesc = editableProject.description">
+                    <input type="text" id="jobDesc" ng-model="jDesc" placeholder="" class="form-control" ng-init="jDesc = editableJob.description">
                 </div>
             </div>
             <div class="form-group">
-                <!-- Оценка времени -->
-                <label class="col-lg-3 control-label" for="projTimeEst">Оценка времени</label>
+                <label class="col-lg-3 control-label" for="jobTimeEst">Оценка времени</label>
                 <div class="col-lg-6">
-                    <input type="number" id="projTimeEst" ng-model="pTimeEst" placeholder="" class="form-control" ng-init="pTimeEst = editableProject.time_estimated">
+                    <input type="number" id="jobTimeEst" ng-model="jTimeEst" placeholder="" class="form-control" ng-init="jTimeEst = editableJob.time_estimated">
                 </div>
             </div>
 
                 <div class="form-group">
-                <!-- Оценка стоимости -->
-                <label class="col-lg-3 control-label" for="projCostEst">Оценка стоимости</label>
+                <label class="col-lg-3 control-label" for="jobCostEst">Оценка стоимости</label>
                 <div class="col-lg-6">
-                    <input type="number" id="projCostEst" ng-model="pCostEst" placeholder="" class="form-control" ng-init="pCostEst = editableProject.cost_estimated">
+                    <input type="number" id="jobCostEst" ng-model="jCostEst" placeholder="" class="form-control" ng-init="jCostEst = editableJob.cost_estimated">
                 </div>
             </div>
 
             <div class="form-group">
                 <!-- Фактическое время -->
-                <label class="col-lg-3 control-label" for="projTimeReal">Фактическое время</label>
+                <label class="col-lg-3 control-label" for="jobTimeReal">Фактическое время</label>
                 <div class="col-lg-6">
-                    <input type="number" id="projTimeReal" ng-model="pTimeReal" placeholder="" class="form-control" ng-init="pTimeReal = editableProject.time_real">
+                    <input type="number" id="jobTimeReal" ng-model="jTimeReal" placeholder="" class="form-control" ng-init="jTimeReal = editableJob.time_real">
                 </div>
             </div>
 
             <div class="form-group">
-                <!-- Фактическая стоимость -->
-                <label class="col-lg-3 control-label" for="projCostReal">Фактическая стоимость</label>
+                <label class="col-lg-3 control-label" for="jobCostReal">Фактическая стоимость</label>
                 <div class="col-lg-6">
-                    <input type="number" id="projCostReal" ng-model="pCostReal" placeholder="" class="form-control" ng-init="pCostReal = editableProject.cost_real">
+                    <input type="number" id="jobCostReal" ng-model="jCostReal" placeholder="" class="form-control" ng-init="jCostReal = editableJob.cost_real">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="selectExpert">Назначить эксперта для оценки</label>
+                <div class="col-lg-6">
+                    <select ng-model="jExpert" class="form-control" id="selectExpert">
+                        <option ng-repeat="expert in experts" value="{{expert}}"
+                                ng-selected="{{editableJob.expert.id_expert == expert.id_expert}}">{{expert.login}}</option>
+                    </select>
                 </div>
             </div>
 
@@ -82,7 +87,7 @@
         </fieldset>
     </form>
         <div id="legend2">
-            <legend class="">Декомпозиция работ проекта</legend>
+            <legend class="">Задачи работы</legend>
         </div>
         <!-- line modal -->
         <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -90,38 +95,38 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                        <h3 class="modal-title" id="lineModalLabel">Создать Работу</h3>
+                        <h3 class="modal-title" id="lineModalLabel">Создать Задачу</h3>
                     </div>
                     <!-- content goes here -->
-                    <form ng-submit="edProjControl.addJob(jName, jDesc, jTimeEst, jCostEst, jTimeReal, jCostReal, jExpert)">
+                    <form ng-submit="edJobControl.addTask(tName, tDesc, tTimeEst, tCostEst, tTimeReal, tCostReal, tExpert)">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="inputJName">Название</label>
-                                <input ng-model="jName" class="form-control" type="text" id="inputJName" placeholder="Введите название"/>
+                                <input ng-model="tName" class="form-control" type="text" id="inputJName" placeholder="Введите название"/>
                             </div>
                             <div class="form-group">
                                 <label for="inputJDesc">Краткое описание</label>
-                                <input ng-model="jDesc" class="form-control" type="text" id="inputJDesc" placeholder="Введите описание"/>
+                                <input ng-model="tDesc" class="form-control" type="text" id="inputJDesc" placeholder="Введите описание"/>
                             </div>
                             <div class="form-group">
-                                <label for="inputJTimeEstim">Оценка времени выполнения работы, ч</label>
-                                <input type="number" ng-model="jTimeEst" class="form-control" id="inputJTimeEstim" placeholder="Введите время в часах"/>
+                                <label for="inputJTimeEstim">Оценка времени выполнения задачи, ч</label>
+                                <input type="number" ng-model="tTimeEst" class="form-control" id="inputJTimeEstim" placeholder="Введите время в часах"/>
                             </div>
                             <div class="form-group">
                                 <label for="inputJCostEstim">Оценка стоимости выполнения работы, $</label>
-                                <input type="number" ng-model="jCostEst" class="form-control" id="inputJCostEstim" placeholder="Введите стоимость">
+                                <input type="number" ng-model="tCostEst" class="form-control" id="inputJCostEstim" placeholder="Введите стоимость">
                             </div>
                             <div class="form-group">
                                 <label for="inputJTimeReal">Фактическое время выполнения работы, ч</label>
-                                <input type="number" ng-model="jTimeReal" class="form-control" id="inputJTimeReal" placeholder="Введите фактическое кремя выполнения проекта"/>
+                                <input type="number" ng-model="tTimeReal" class="form-control" id="inputJTimeReal" placeholder="Введите фактическое кремя выполнения проекта"/>
                             </div>
                             <div class="form-group">
                                 <label for="inputJCostReal">Фактическая стоимость выполнения работы, $</label>
-                                <input type="number" ng-model="jCostReal" class="form-control" id="inputJCostReal" placeholder="Введите фактическую стоимость проекта"/>
+                                <input type="number" ng-model="tCostReal" class="form-control" id="inputJCostReal" placeholder="Введите фактическую стоимость проекта"/>
                             </div>
                             <div class="form-group">
-                                <label for="selectExpert">Назначить эксперта для оценки</label>
-                                <select ng-model="jExpert" class="form-control" id="selectExpert">
+                                <label for="selectTaskExpert">Назначить эксперта для оценки</label>
+                                <select ng-model="tExpert" class="form-control" id="selectTaskExpert">
                                     <option ng-repeat="expert in experts" value="{{expert}}">{{expert.login}}</option>
                                 </select>
                             </div>
@@ -144,7 +149,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col col-xs-6">
-                        <h3 class="panel-title">Мои Работы</h3>
+                        <h3 class="panel-title">Мои Задачи</h3>
                     </div>
                     <div class="col col-xs-6 text-right">
                         <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-sm btn-primary btn-create">Создать</button>
@@ -167,20 +172,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="job in jobs">
+                    <tr ng-repeat="task in tasks">
                     <td align="center">
-                    <a class="btn btn-default" ng-click="edProjControl.openJobForEdit(job)"><em class="fa fa-pencil"></em></a>
+                    <a class="btn btn-default" ng-click="edJobControl.openTaskForEdit(task)"><em class="fa fa-pencil"></em></a>
                     <a class="btn btn-danger"
-                    ng-click="edProjControl.deleteJob(job)"><em class="fa fa-trash"></em></a>
+                    ng-click="edJobControl.deleteTask(task)"><em class="fa fa-trash"></em></a>
                     </td>
-                    <td class="hidden-xs">{{job.id_job}}</td>
-                    <td>{{job.name}}</td>
-                    <td>{{job.description}}</td>
-                    <td>{{job.time_estimated}}</td>
-                    <td>{{job.cost_estimated}}</td>
-                    <td>{{job.time_real}}</td>
-                    <td>{{job.cost_real}}</td>
-                    <td>{{job.expert.login}}</td>
+                    <td class="hidden-xs">{{task.id_task}}</td>
+                    <td>{{task.name}}</td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.time_estimated}}</td>
+                    <td>{{task.cost_estimated}}</td>
+                    <td>{{task.time_real}}</td>
+                    <td>{{task.cost_real}}</td>
+                    <td>{{task.expert.login}}</td>
                     </tr>
                     </tbody>
                 </table>
