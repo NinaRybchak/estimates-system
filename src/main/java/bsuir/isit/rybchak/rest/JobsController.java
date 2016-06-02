@@ -44,4 +44,15 @@ public class JobsController {
         jobService.updateJob(job);
         return job;
     }
+
+    @RequestMapping(value = "/jobs/experts", method = RequestMethod.GET)
+    private List<Job> getExpertJobs(@RequestParam Integer id_expert) {
+        List<Job> allJobs = jobService.getAllJobs();
+        List<Job> expertJobs = new ArrayList<Job>();
+        for(Job job : allJobs) {
+            if((job.getExpert()!= null) && (job.getExpert().getId_user() == id_expert))
+                expertJobs.add(job);
+        }
+        return expertJobs;
+    }
 }

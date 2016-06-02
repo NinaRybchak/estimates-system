@@ -9,6 +9,8 @@ var sampleApp = angular.module('sampleApp', ['ngRoute']).run(function ($rootScop
         $rootScope.editableUser = [];
         $rootScope.editableJob = [];
         $rootScope.editableTask = [];
+        $rootScope.estimatedJob = [];
+        $rootScope.estimatedTask = [];
     }
 );
 
@@ -47,6 +49,26 @@ sampleApp.config(['$routeProvider', '$locationProvider', function($routeProvider
         .when('/ui/editTask', {
             templateUrl : '/ui/editTask.html',
             controller : 'projectsController'
+        })
+
+        .when('/ui/pm/experts', {
+            templateUrl : '/ui/manager_experts.html',
+            controller : 'projectsController'
+        })
+
+        .when('/ui/expert/home', {
+            templateUrl : '/ui/experts.html',
+            controller : 'expertsController'
+        })
+
+        .when('/ui/expert/estimateJob', {
+            templateUrl : '/ui/estimateJob.html',
+            controller : 'estimateJobController'
+        })
+
+        .when('/ui/expert/estimateTask', {
+            templateUrl : '/ui/estimateTask.html',
+            controller : 'estimateTaskController'
         })
         
         .otherwise({

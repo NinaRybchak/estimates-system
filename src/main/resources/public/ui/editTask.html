@@ -8,7 +8,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"></a></li>
                     <li><a href="/ui/projects" ng-click="projControl.getProjects()">Проекты</a></li>
-                    <li><a href="#">Эксперты</a></li>
+                    <li><a href="/ui/pm/experts" ng-click="projControl.getExperts()">Эксперты</a></li>
                     <li>
                         <div ng-controller="loginController as logControl">
                             <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse"
@@ -23,7 +23,7 @@
 <div ng-controller="editTaskController as edTaskControl">
     <div class="container">
     <form class="form-horizontal"
-          ng-submit="edTaskControl.updateTask(tName,tDesc,tTimeEst,tCostEst,tTimeReal,tCostReal,tEdExpert)">
+          ng-submit="edTaskControl.updateTask(tName,tDesc,tTimeEst,tCostEst,tTimeReal,tCostReal)">
         <fieldset>
             <div id="legend1">
                 <legend class="">Данные задачи</legend>
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="selectEdExpert">Назначить эксперта для оценки</label>
                 <div class="col-lg-6">
-                    <select ng-model="tEdExpert" class="form-control" id="selectEdExpert" ng-init="tEdExpert">
+                    <select class="form-control" id="selectEdExpert" ng-init="tEdExpert">
                         <option ng-repeat="expert in experts" value="{{expert}}"
                                 ng-selected="{{editableTask.expert.id_expert == expert.id_expert}}">{{expert.login}}</option>
                     </select>

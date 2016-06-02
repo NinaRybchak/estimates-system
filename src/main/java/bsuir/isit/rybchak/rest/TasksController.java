@@ -44,4 +44,15 @@ public class TasksController {
         taskService.updateTask(task);
         return task;
     }
+
+    @RequestMapping(value = "/tasks/experts", method = RequestMethod.GET)
+    private List<Task> getExpertTasks(@RequestParam Integer id_expert) {
+        List<Task> allTasks = taskService.getAllTasks();
+        List<Task> expertTasks = new ArrayList<Task>();
+        for(Task task : allTasks) {
+            if((task.getExpert()!=null) && (task.getExpert().getId_user() == id_expert))
+                expertTasks.add(task);
+        }
+        return expertTasks;
+    }
 }
