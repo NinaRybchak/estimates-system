@@ -157,5 +157,96 @@ sampleApp.controller('loginController', function ($scope, $rootScope, $http, $lo
 });
 
 sampleApp.controller('adminController', function ($scope, $rootScope, $http, $location, $route) {
-    
+    $scope.users = [];
+    $scope.roles = [];
+    this.getUsers = function () {
+        $http.get(serverUrl + '/users/all').then(function (response) {
+                $scope.users = response.data;
+                console.log('success on get users');
+            },
+            function () {
+                console.log('error on get users');
+            });
+    };
+    this.getRoles = function () {
+        $http.get(serverUrl + '/roles/all').then(function (response) {
+                $scope.roles = response.data;
+                console.log('success on get roles');
+            },
+            function () {
+                console.log('error on get roles');
+            });
+    };
+    this.addUser = function (fName, lName, pos, login, password, role) {
+        var jsonRole = JSON.parse(role);
+        var user = {
+            "id_user" : "null",
+            "first_name" : fName,
+            "surname" : lName,
+            "position" : pos,
+            "login" : login,
+            "password" : password,
+            "role" : jsonRole
+        }
+        $http.post(serverUrl + "/addUser", user).success(function (response) {
+            $('#squarespaceModal').modal('hide');
+            $scope.users.push(response);
+            $rootScope.editableUser = [];
+            console.log('User added successfully');
+        })
+            .error(function (error) {
+                console.log('Error on adding user');
+            });
+    };
+    this.openUserForEdit = function (user) {
+        $rootScope.editableUser = user;
+        $location.path('/ui/editUser');
+    };
+    this.deleteUser = function (user) {
+        if(confirm("Вы уверены, что хотите удалить пользователя?")) {
+            $http.post(serverUrl + "/deleteUser", user.id_user).success(function () {
+                $route.reload();
+                console.log('success on delete user');
+            })
+                .error(function (error) {
+                    console.log('error on delete user');
+                });
+        }
+    };
+    angular.element(document).ready(this.getUsers());
+});
+
+sampleApp.controller('editUserController', function ($scope, $rootScope, $http, $location, $route) {
+    $scope.roles = [];
+    this.updateUser = function (fName, lName, pos, login, password, role) {
+        var jsonRole = JSON.parse(role);
+        var user = {
+            "id_user" : $rootScope.editableUser.id_user,
+            "first_name" : fName,
+            "surname" : lName,
+            "position" : pos,
+            "login" : login,
+            "password" : password,
+            "role" : jsonRole
+        }
+        $http.post(serverUrl + "/updateUser", user).success(function (response) {
+            $rootScope.editableUser = [];
+            alert("Изменения сохранены успешно!");
+            $location.path('/ui/admin');
+            console.log('Project updated successfully');
+        })
+            .error(function (error) {
+                console.log('Error on updating project');
+            });
+    };
+    this.getRoles = function () {
+        $http.get(serverUrl + '/roles/all').then(function (response) {
+                $scope.roles = response.data;
+                console.log('success on get roles');
+            },
+            function () {
+                console.log('error on get roles');
+            });
+    };
+    angular.element(document).ready(this.getRoles());
 });

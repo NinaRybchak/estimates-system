@@ -1,0 +1,84 @@
+<div ng-controller="adminController as admControl">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Добро пожаловать, {{loggedUser.first_name}} {{loggedUser.surname}}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"></a></li>
+                    <li>
+                        <div ng-controller="loginController as logControl">
+                            <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse"
+                               aria-expanded="false" aria-controls="nav-collapse1" ng-click = "logControl.logOut()">Выйти</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div ng-controller="editUserController as edUsControl">
+    <div class="container">
+    <form class="form-horizontal" ng-submit="edUsControl.updateUser(fName, lName, pos, login, password, role)">
+        <fieldset>
+            <div id="legend1">
+                <legend class="">Редактировать пользователя</legend>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label"  for="firstName">Имя пользователя</label>
+                <div class="col-lg-6">
+                    <input type="text" id="firstName" ng-model="fName" placeholder="" class="form-control" ng-init="fName = editableUser.first_name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="surname">Фамилия пользователя</label>
+                <div class="col-lg-6">
+                    <input type="text" id="surname" ng-model="lName" placeholder="" class="form-control"
+                           ng-init="lName = editableUser.surname">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="position">Позиция в компании</label>
+                <div class="col-lg-6">
+                    <input type="text" id="position" ng-model="pos" placeholder="" class="form-control"
+                           ng-init="pos = editableUser.position">
+                </div>
+            </div>
+
+                <div class="form-group">
+                <label class="col-lg-3 control-label" for="iLogin">Логин</label>
+                <div class="col-lg-6">
+                    <input type="text" id="iLogin" ng-model="login" placeholder="" class="form-control"
+                           ng-init="login = editableUser.login">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="iPassw">Пароль</label>
+                <div class="col-lg-6">
+                    <input type="password" id="iPassw" ng-model="password" placeholder="" class="form-control"
+                           ng-init="password = editableUser.password">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="selectRole">Роль в системе</label>
+                <div class="col-lg-6">
+                    <select ng-model="role" class="form-control" id="selectRole">
+                        <option ng-repeat="role in roles" value="{{role}}"
+                                ng-selected="{{role.id_role == editableUser.role.id_role}}">{{role.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Button -->
+                <div class="col-lg-9 col text-right">
+                    <button type="submit" class="btn btn-sm btn-primary btn-create">Сохранить изменения</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</div>

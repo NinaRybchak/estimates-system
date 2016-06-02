@@ -10,8 +10,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_user;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role")
+    @ManyToOne()
+    @JoinColumn(name = "id_role", referencedColumnName = "id_role")
     private Role role;
 
     @Column()

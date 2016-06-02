@@ -6,6 +6,7 @@ var serverUrl = "http://localhost:8080";
 var sampleApp = angular.module('sampleApp', ['ngRoute']).run(function ($rootScope) {
         $rootScope.loggedUser = [];
         $rootScope.editableProject = [];
+        $rootScope.editableUser = [];
     }
 );
 
@@ -29,6 +30,11 @@ sampleApp.config(['$routeProvider', '$locationProvider', function($routeProvider
         .when('/ui/editProject', {
             templateUrl : '/ui/editProject.html',
             controller : 'projectsController'
+        })
+
+        .when('/ui/editUser', {
+            templateUrl : '/ui/editUser.html',
+            controller : 'adminController'
         })
         
         .otherwise({

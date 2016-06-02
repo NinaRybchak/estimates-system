@@ -8,27 +8,38 @@
                     <h3 class="modal-title" id="lineModalLabel">Добавить Пользователя</h3>
                 </div>
                 <!-- content goes here -->
-                <form ng-submit="admControl.addUser(fName, lName, pos, login, password)">
+                <form ng-submit="admControl.addUser(fName, lName, pos, login, password, role)">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="inputFName">Имя пользователя</label>
-                            <input ng-model="fName" class="form-control" type="text" id="inputFName" placeholder="Введите имя"/>
+                            <input ng-model="fName" class="form-control" type="text" ng-init = "fName=editableUser.first_name"
+                                   id="inputFName" placeholder="Введите имя"/>
                         </div>
                         <div class="form-group">
                             <label for="inputLName">Фамилия пользователя</label>
-                            <input ng-model="lName" class="form-control" type="text" id="inputLName" placeholder="Введите фамилию"/>
+                            <input ng-model="lName" class="form-control" type="text" ng-init="lName=editableUser.surname"
+                                   id="inputLName" placeholder="Введите фамилию"/>
                         </div>
                         <div class="form-group">
                             <label for="inputPos">Позиция в компании</label>
-                            <input type="text" ng-model="pos" class="form-control" id="inputPos" placeholder="Введите позицию"/>
+                            <input type="text" ng-model="pos" class="form-control" id="inputPos" ng-init="pos=editableUser.position"
+                                   placeholder="Введите позицию"/>
                         </div>
                         <div class="form-group">
                             <label for="inputLogin">Логин</label>
-                            <input type="text" ng-model="login" class="form-control" id="inputLogin" placeholder="Введите логин">
+                            <input type="text" ng-model="login" class="form-control" ng-init="login=editableUser.login"
+                                   id="inputLogin" placeholder="Введите логин">
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Пароль</label>
-                            <input type="password" ng-model="password" class="form-control" id="inputPassword" placeholder="Введите пароль"/>
+                            <input type="password" ng-model="password" class="form-control" ng-init="password=editableUser.password"
+                                   id="inputPassword" placeholder="Введите пароль"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectRole">Роль в системе</label>
+                            <select ng-model="role" class="form-control" id="selectRole" ng-init="role=editableUser.role">
+                                <option ng-repeat="role in roles" value="{{role}}">{{role.name}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -69,10 +80,11 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col col-xs-6">
-                        <h3 class="panel-title">Мои Проекты</h3>
+                        <h3 class="panel-title">Все пользователи</h3>
                     </div>
                     <div class="col col-xs-6 text-right">
-                        <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-sm btn-primary btn-create">Создать</button>
+                        <button data-toggle="modal" data-target="#squarespaceModal"
+                                ng-click="admControl.getRoles()" class="btn btn-sm btn-primary btn-create">Добавить пользователя</button>
                     </div>
                 </div>
             </div>
@@ -82,50 +94,33 @@
                     <tr>
                         <th><em class="fa fa-cog"></em></th>
                         <th class="hidden-xs">ID</th>
-                        <th>Название</th>
-                        <th>Краткое описание</th>
-                        <th>Оценки времени</th>
-                        <th>Оценки стоимости</th>
-                        <th>Реальное время</th>
-                        <th>Реальная стоимость</th>
+                        <th>Логин</th>
+                        <th>Пароль</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Позиция</th>
+                        <th>Роль в системе</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="project in projects">
+                    <tr ng-repeat="user in users">
                         <td align="center">
-                            <a class="btn btn-default" ng-click="projControl.openProjectForEdit(project)"><em class="fa fa-pencil"></em></a>
+                            <a class="btn btn-default"
+                               ng-click="admControl.openUserForEdit(user)"><em class="fa fa-pencil"></em></a>
                             <a class="btn btn-danger"
-                               ng-click="projControl.deleteProject(project)"><em class="fa fa-trash"></em></a>
+                               ng-click="admControl.deleteUser(user)"><em class="fa fa-trash"></em></a>
                         </td>
-                        <td class="hidden-xs">{{project.id_project}}</td>
-                        <td>{{project.name}}</td>
-                        <td>{{project.description}}</td>
-                        <td>{{project.time_estimated}}</td>
-                        <td>{{project.cost_estimated}}</td>
-                        <td>{{project.time_real}}</td>
-                        <td>{{project.cost_real}}</td>
+                        <td class="hidden-xs">{{user.id_user}}</td>
+                        <td>{{user.login}}</td>
+                        <td>{{user.password}}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.surname}}</td>
+                        <td>{{user.position}}</td>
+                        <td>{{user.role.name}}</td>
                     </tr>
                     </tbody>
                 </table>
 
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col col-xs-4">Page 1 of 5</div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                        <ul class="pagination visible-xs pull-right">
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

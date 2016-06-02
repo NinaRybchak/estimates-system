@@ -30,4 +30,22 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    @Transactional
+    public void deleteUser(Integer id_user) {
+        userDao.delete(id_user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        userDao.saveOrUpdate(user);
+    }
+
+    @Override
+    @Transactional
+    public void createUser(User user) {
+        userDao.save(user);
+    }
 }
