@@ -106,7 +106,7 @@
 
     <profiles>
         <profile>
-            <id_user>local</id_user>
+            <id>local</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
