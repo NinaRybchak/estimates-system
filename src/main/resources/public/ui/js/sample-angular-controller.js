@@ -92,8 +92,10 @@ sampleApp.controller('editProjectController', function ($scope, $rootScope, $htt
                 console.log('Error on updating project');
             });
     };
-    this.addJob = function (jName, jDesc, jTimeEst, jCostEst, jCostReal, jTimeReal, jExpert) {
-        var jsonExpert = JSON.parse(jExpert);
+    this.addJob = function (jName, jDesc, jTimeEst, jCostEst, jCostReal, jTimeReal, jAExpert) {
+        var jsonExpert = null;
+        if(jAExpert != null)
+            jsonExpert = JSON.parse(jAExpert);
         var job = {
             "id_job" : "null",
             "name" : jName,
